@@ -8,7 +8,7 @@ function BinarioADecimal(num) {
     num = Math.floor(num / 10);
     potencia++;
   }
-  return decimal;
+  return decimal; /* return parseInt(num, 2)*/
 }
 
 function DecimalABinario(num) {
