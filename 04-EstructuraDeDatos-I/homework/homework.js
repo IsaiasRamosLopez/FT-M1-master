@@ -35,6 +35,34 @@ Queue.prototype.size = function () {
   return this.array.length;
 };
 
+class _Queue {
+  constructor(array = []) {
+    this.array = array;
+  }
+
+  _enqueue(value) {
+    this.array.push(value);
+  }
+
+  _dequeue() {
+    return this.array.shift();
+  }
+
+  _size() {
+    return this.array.length;
+  }
+}
+var applyQueue = new _Queue([1, 0, 0]);
+console.log(applyQueue);
+applyQueue._enqueue(3);
+applyQueue._dequeue();
+applyQueue._enqueue(2);
+applyQueue._dequeue();
+applyQueue._enqueue(2);
+applyQueue._dequeue();
+console.log(applyQueue);
+console.log("Size: ", applyQueue._size());
+
 // No modifiquen nada debajo de esta linea
 // --------------------------------
 
