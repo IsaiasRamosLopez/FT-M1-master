@@ -1,22 +1,86 @@
-'use strict';
+"use strict";
 
 /* EJERCICIO 1
 Implementar la clase LinkedList, definiendo los siguientes métodos:
   - add: agrega un nuevo nodo al final de la lista;
   - remove: elimina el último nodo de la lista y retorna su valor (tener en cuenta el caso particular de una lista de un solo nodo y de una lista vacía);
-  - search: recibe un parámetro y lo busca dentro de la lista, con una particularidad: el parámetro puede ser un valor o un callback. En el primer caso, buscamos un nodo cuyo valor coincida con lo buscado; en el segundo, buscamos un nodo cuyo valor, al ser pasado como parámetro del callback, retorne true. 
-  EJEMPLO 
+  - search: recibe un parámetro y lo busca dentro de la lista, con una particularidad: el parámetro puede ser un valor o un callback. En el primer caso, buscamos un nodo cuyo valor coincida con lo buscado; en el segundo, buscamos un nodo cuyo valor, al ser pasado como parámetro del callback, retorne true.
+  EJEMPLO
   search(3) busca un nodo cuyo valor sea 3;
   search(isEven), donde isEven es una función que retorna true cuando recibe por parámetro un número par, busca un nodo cuyo valor sea un número par.
   En caso de que la búsqueda no arroje resultados, search debe retornar null.
 */
-function LinkedList() {}
+// function LinkedList() {}
+class LinkedList {
+  constructor() {
+    this.head = null;
+    this.tail = null;
+  }
 
-function Node(value) {}
+  add(value) {
+    const newNode = new Node(value);
+    if (this.head === null) {
+      this.head = newNode;
+      this.tail = newNode;
+    } else {
+      this.tail.next = newNode;
+      this.tail = newNode;
+    }
+  }
+
+  remove() {
+    if (this.head === null) {
+      return null;
+    } else if (this.head === this.tail) {
+      const value = this.head.value;
+      this.head = null;
+      this.tail = null;
+      return value;
+    } else {
+      let currentNode = this.head;
+      while (currentNode.next !== this.tail) {
+        currentNode = currentNode.next;
+      }
+      const value = this.tail.value;
+      this.tail = currentNode;
+      this.tail.next = null;
+      return value;
+    }
+  }
+
+  search(valueOrCallback) {
+    if (this.head === null) {
+      return null;
+    } else {
+      let currentNode = this.head;
+      while (currentNode !== null) {
+        if (typeof valueOrCallback === "function") {
+          if (valueOrCallback(currentNode.value)) {
+            return currentNode.value;
+          }
+        } else {
+          if (currentNode.value === valueOrCallback) {
+            return currentNode.value;
+          }
+        }
+        currentNode = currentNode.next;
+      }
+      return null;
+    }
+  }
+}
+
+// function Node(value) {}
+class Node {
+  constructor(value) {
+    this.value = value;
+    this.next = null;
+  }
+}
 
 /* EJERCICIO 2
 Implementar la clase HashTable.
-Nuetra tabla hash, internamente, consta de un arreglo de buckets (slots, contenedores, o casilleros; es decir, posiciones posibles para almacenar la información), donde guardaremos datos en formato clave-valor (por ejemplo, {instructora: 'Ani'}).
+Nuetra tabla hash, internamente, consta de un arreglo de buckets (slots, contenedores, o casilleros; es decir, posiciones posibles parreva almacenar la información), donde guardaremos datos en formato clave-valor (por ejemplo, {instructora: 'Ani'}).
 Para este ejercicio, la tabla debe tener 35 buckets (numBuckets = 35). (Luego de haber pasado todos los tests, a modo de ejercicio adicional, pueden modificar un poco la clase para que reciba la cantidad de buckets por parámetro al momento de ser instanciada.)
 
 La clase debe tener los siguientes métodos:
@@ -27,13 +91,56 @@ La clase debe tener los siguientes métodos:
 
 Ejemplo: supongamos que quiero guardar {instructora: 'Ani'} en la tabla. Primero puedo chequear, con hasKey, si ya hay algo en la tabla con el nombre 'instructora'; luego, invocando set('instructora', 'Ani'), se almacenará el par clave-valor en un bucket específico (determinado al hashear la clave)
 */
-function HashTable() {}
+// function HashTable() {}
+class HashTable {
+  constructor() {
+    this.numBuckets = 35;
+    this.buckets = [];
+  }
+  hash(key) {
+    let total = 0;
+    for (let i = 0; i < key.length; i++) {
+      total += key.charCodeAt(i);
+    }
+    return total % this.numBuckets;
+  }
+  set(key, value) {
+    const index = this.hash(key);
+    if (!this.buckets[index]) {
+      this.buckets[index] = [];
+    }
+    this.buckets[index].push([key, value]);
+  }
+  get(key) {
+    const index = this.hash(key);
+    if (!this.buckets[index]) {
+      return null;
+    }
+    for (let i = 0; i < this.buckets[index].length; i++) {
+      if (this.buckets[index][i][0] === key) {
+        return this.buckets[index][i][1];
+      }
+    }
+  }
+  hasKey(key) {
+    const index = this.hash(key);
+    if (!this.buckets[index]) {
+      return false;
+    }
+    for (let i = 0; i < this.buckets[index].length; i++) {
+      if (this.buckets[index][i][0] === key) {
+        return true;
+      }
+    }
+    return false;
+  }
+}
 
 // No modifiquen nada debajo de esta linea
 // --------------------------------
 
 module.exports = {
-   Node,
-   LinkedList,
-   HashTable,
+  Node,
+  LinkedList,
+  HashTable,
 };
