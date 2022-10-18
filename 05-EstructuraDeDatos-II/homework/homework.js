@@ -106,33 +106,21 @@ class HashTable {
   }
   set(key, value) {
     const index = this.hash(key);
-    if (!this.buckets[index]) {
-      this.buckets[index] = [];
+    if (typeof key !== "string") {
+      throw new TypeError("Keys must be strings");
     }
-    this.buckets[index].push([key, value]);
+    if (!this.buckets[index]) {
+      this.buckets[index] = {};
+    }
+    this.buckets[index][key] = value;
   }
   get(key) {
     const index = this.hash(key);
-    if (!this.buckets[index]) {
-      return null;
-    }
-    for (let i = 0; i < this.buckets[index].length; i++) {
-      if (this.buckets[index][i][0] === key) {
-        return this.buckets[index][i][1];
-      }
-    }
+    return this.buckets[index][key];
   }
   hasKey(key) {
     const index = this.hash(key);
-    if (!this.buckets[index]) {
-      return false;
-    }
-    for (let i = 0; i < this.buckets[index].length; i++) {
-      if (this.buckets[index][i][0] === key) {
-        return true;
-      }
-    }
-    return false;
+    return this.buckets[index].hasOwnProperty(key);
   }
 }
 
