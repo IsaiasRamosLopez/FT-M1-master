@@ -1,4 +1,4 @@
-'use strict'
+"use strict";
 // No cambies los nombres de las funciones.
 
 function quickSort(array) {
@@ -6,7 +6,6 @@ function quickSort(array) {
   // el array recibido como parámetro
   // Devolver el array ordenado resultante
   // Tu código:
-
 }
 
 function mergeSort(array) {
@@ -14,7 +13,6 @@ function mergeSort(array) {
   // el array recibido como parámetro
   // Devolver el array ordenado resultante
   // Tu código:
-
   //okey probemos ahora
 }
 
